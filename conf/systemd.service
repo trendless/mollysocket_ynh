@@ -4,7 +4,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-Environment="RUST_LOG=info"
+#Environment="RUST_LOG=info"
 Environment="MOLLY_CONF=__INSTALL_DIR__/prod.toml"
 WorkingDirectory=__INSTALL_DIR__/
 StandardOutput=append:/var/log/__APP__/__APP__.log
