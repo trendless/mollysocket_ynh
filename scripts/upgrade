@@ -5,7 +5,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression "Stopping $app's systemd service..."
+ynh_script_progression "Stopping systemd service..."
 
 ynh_systemctl --service="$app" --action="stop"
 
@@ -14,7 +14,7 @@ ynh_systemctl --service="$app" --action="stop"
 #=================================================
 ynh_script_progression "Upgrading source files..."
 
-ynh_setup_source --dest_dir="$install_dir" --full_replace --keep="prod.toml mollysocket.db"
+ynh_setup_source --dest_dir="$install_dir" --full_replace --keep="conf.toml mollysocket.db"
 
 chown -R "$app:$app" "$install_dir"
 chmod +x "$install_dir/ms"
@@ -22,7 +22,7 @@ chmod +x "$install_dir/ms"
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression "Upgrading system configurations related to $app..."
+ynh_script_progression "Upgrading system configurations..."
 
 ynh_config_add_nginx
 
@@ -35,12 +35,12 @@ ynh_config_add_logrotate
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression "Starting $app's systemd service..."
+ynh_script_progression "Starting systemd service..."
 
-ynh_systemctl --service="$app" --action="start"
+ynh_systemctl --service="$app" --action="start" --log_path="/var/log/$app/$app.log" --wait_until="Rocket has launched from"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression "Upgrade of $app completed"
+ynh_script_progression "Upgrade of $app complete."

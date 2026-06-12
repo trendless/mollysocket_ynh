@@ -12,12 +12,9 @@ version = "1.7.1~ynh1"
 maintainers = ["mcmic"]
 
 [upstream]
-# NB: Only the "license" key is mandatory. Remove entries for which there's no relevant data
 license = "AGPL-3.0-or-later" # you can see the available licenses identifiers list here: https://spdx.org/licenses/
 website = "https://molly.im/"
-#demo = "https://demo.example.com"
 admindoc = "https://github.com/mollyim/mollysocket/blob/main/README.md"
-#userdoc = "https://yunohost.org/apps"
 code = "https://github.com/mollyim/mollysocket"
 
 fund = "https://opencollective.com/mollyim"
@@ -28,12 +25,7 @@ helpers_version = "2.1"
 architectures = ["amd64","armhf","arm64"]
 multi_instance = true
 
-# Not to confuse with the "sso" key: the "ldap" key corresponds to wether or not a user *can* login on the app using
-# its YunoHost credentials.
 ldap = "not_relevant"
-
-# Not to confuse with the "ldap" key: the "sso" key corresponds to wether or not a user is *automatically logged-in*
-# on the app when logged-in on the YunoHost portal.
 sso = "not_relevant"
 
 disk = "50M"
@@ -41,20 +33,25 @@ ram.build = "50M"
 ram.runtime = "50M"
 
 [install]
+
     [install.domain]
-    # this is a generic question - ask strings are automatically handled by YunoHost's core
     type = "domain"
 
+    [install.init_main_permission]
+    type = "group"
+    default = "visitors"
+
+    [install.allowed_endpoints]
+    ask = "the URL of the UnifiedPush server that can forward notifications; leave as `*` if you don't want to limit which UP servers can use this instance of mollysocket"
+    help = "https://my.domain.tld"
+    type = "string"
+    default = "*"
+
 [resources]
-    # See the packaging documentation for the full set
-    # of explanation regarding the behavior and properties for each of those
 
     [resources.sources]
 
     [resources.sources.main]
-    # This will pre-fetch the asset which can then be deployed during the install/upgrade scripts with :
-    #    ynh_setup_source --dest_dir="$install_dir"
-    # You can also define other assets than "main" and add --source_id="foobar" in the previous command
     amd64.url = "https://github.com/mollyim/mollysocket/releases/download/1.7.1/mollysocket-linux_amd64"
     amd64.sha256 = "09fa591aa732aac1ad7a16f71107b7a8e7ba9b01abcee25e9c66203818bc7bfd"
     arm64.url = "https://github.com/mollyim/mollysocket/releases/download/1.7.1/mollysocket-linux_arm64"
@@ -63,39 +60,18 @@ ram.runtime = "50M"
     armhf.sha256 = "6035cc9b0b07881c84a28dec61d8b7353aafdaef663eeeb8e9270d809e39e90c"
     rename = "ms"
 
-    # These infos are used by https://github.com/YunoHost/apps/blob/master/tools/autoupdate_app_sources/autoupdate_app_sources.py
-    # to auto-update the previous asset urls and sha256sum + manifest version
-    # assuming the upstream's code repo is on github and relies on tags or releases
-    # See the 'sources' resource documentation for more details
-
-    # autoupdate.strategy = "latest_github_tag"
     autoupdate.strategy = "latest_github_release"
     autoupdate.asset.amd64 = "mollysocket-linux_amd64"
     autoupdate.asset.arm64 = "mollysocket-linux_arm64"
     autoupdate.asset.armhf = "mollysocket-linux_arm_v7"
 
     [resources.system_user]
-    # This will provision/deprovision a unix system user
 
     [resources.install_dir]
-    # This will create/remove the install dir as /var/www/$app
-    # and store the corresponding setting $install_dir
 
     [resources.permissions]
-    # This will configure SSOwat permission for $domain/$path/
-    # The initial allowed group of user is configured via the init_main_permission question (public=visitors, private=all_users)
     main.url = "/"
     main.show_tile = false
     main.allowed = "visitors"
 
     [resources.ports]
-    # This will pick a random port for reverse-proxying and store it as the $port setting
-
-    [resources.apt]
-    # This will automatically install/uninstall the following apt packages
-    # and implicitly define the $phpversion setting as 8.0 (if phpX.Y-foobar dependencies are listed)
-    packages = ""
-
-    #[resources.database]
-    # This will automatically provision/deprovison a MySQL DB and store the corresponding credentials in settings $db_user, $db_name, $db_pwd
-    #type = "mysql"

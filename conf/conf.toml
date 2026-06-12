@@ -1,6 +1,5 @@
 db = '__INSTALL_DIR__/mollysocket.db'
-allowed_endpoints = ['*']
+allowed_endpoints = ['__ALLOWED_ENDPOINTS__']
 allowed_uuids = ['*']
 webserver = true
 port = __PORT__
-vapid_privkey = '__VAPIDKEY__'
